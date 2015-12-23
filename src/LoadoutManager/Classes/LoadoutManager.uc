@@ -64,13 +64,41 @@ function bool IsSlotEmpty(int iBank, int iSlot)
     return kSaveSlots[iBank].kLoadout[iSlot].iArmor == 0;
 }
 
+function String GetLocalizedItemName(int ItemType)
+{
+    return XComGameReplicationInfo(class'Engine'.static.GetCurrentWorldInfo().GRI).m_kGameCore.GetLocalizedItemName(EItemType(ItemType));
+}
+
 function String GetLoadoutSummary(int iBank, int iSlot)
 {
-   if (IsSlotEmpty(iBank, iSlot)) {
-       return "<Empty>";
-   } else {
-      return "TODO: Contents";
-   }
+    local String str;
+    local int i;
+    if (IsSlotEmpty(iBank, iSlot)) {
+        return "<Empty>";
+    } else {
+        str = GetLocalizedItemName(kSaveSlots[iBank].kLoadout[iSlot].iArmor);
+        if (kSaveSlots[iBank].kLoadout[iSlot].iPistol != 0) {
+            str $= "\n" $ GetLocalizedItemName(kSaveSlots[iBank].kLoadout[iSlot].iPistol);
+        }
+        for (i = 0; i < kSaveSlots[iBank].kLoadout[iSlot].iNumLargeItems; ++i) {
+            if (i % 2 == 0) {
+                str $= "\n";
+            } else {
+                str $= " / ";
+            }
+            str $= GetLocalizedItemName(kSaveSlots[iBank].kLoadout[iSlot].arrLargeItems[i]);
+        }
+        for (i = 0; i < kSaveSlots[iBank].kLoadout[iSlot].iNumSmallItems; ++i) {
+            if (i % 2 == 0) {
+                str $= "\n";
+            } else {
+                str $= " / ";
+            }
+            str $= GetLocalizedItemName(kSaveSlots[iBank].kLoadout[iSlot].arrSmallItems[i]);
+        }
+
+        return str;
+    }
 }
 
 function UpdateMainMenu()
@@ -91,15 +119,15 @@ function UpdateMainMenu()
     `Log("Using bank " $ iBank $ " for class " $ kSoldier.GetEnergy());
 
     for (i = 0; i < NUM_SLOTS; ++i) {
-       kOption.strText = "Loadout Slot " $ string(i + 1);
-       if (kUI.m_iCurrentView == RESTORE_LOADOUT_VIEW) {
-           kOption.iState = IsSlotEmpty(iBank, i) ? 1 : 0;
-       } else {
-           kOption.iState = 0;
-       }
-       kOption.strHelp = GetLoadoutSummary(iBank, i);
-       kUI.m_kMainMenu.arrOptions.AddItem(i);
-       kMainMenu.arrOptions.AddItem(kOption);
+        kOption.strText = "Loadout Slot " $ string(i + 1);
+        if (kUI.m_iCurrentView == RESTORE_LOADOUT_VIEW) {
+            kOption.iState = IsSlotEmpty(iBank, i) ? 1 : 0;
+        } else {
+            kOption.iState = 0;
+        }
+        kOption.strHelp = GetLoadoutSummary(iBank, i);
+        kUI.m_kMainMenu.arrOptions.AddItem(i);
+        kMainMenu.arrOptions.AddItem(kOption);
     }
 
     kUI.m_kMainMenu.mnuOptions = kMainMenu;
