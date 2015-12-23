@@ -1,0 +1,38 @@
+UPK_FILE=XComGame.upk
+OBJECT=Checkpoint
+
+[BEFORE_CODE]
+<%u 0x080000B2>
+<Core.Object>
+<None>
+[AFTER_CODE]
+<%u 0x080000B6>
+<Core.Object>
+<Checkpoint>
+
+OBJECT=Checkpoint.ActorClassesToRecord
+[BEFORE_CODE]
+<%u 0x00400002>
+[AFTER_CODE]
+<%u 0x00404002>
+
+OBJECT=Checkpoint.ActorClassesToRecord.ActorClassesToRecord
+[BEFORE_CODE]
+<%u 0x00000001>
+<%u 0x00000000>
+[AFTER_CODE]
+<%u 0x00000001>
+<%u 0x00004000>
+
+UPK_FILE=XComStrategyGame.upk
+OBJECT=Checkpoint_StrategyGame
+
+[BEFORE_CODE]
+<%u 0x00000032>
+<Core.Object>
+<None>
+[AFTER_CODE]
+<%u 0x00000036>
+<Core.Object>
+<Checkpoint>
+
