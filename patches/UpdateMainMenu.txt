@@ -181,7 +181,7 @@ OBJECT = XGSoldierUI.UpdateMainMenu : AUTO
         /* Else block for new states. 0B9C is the location to jump to after finishing 0BEE is the next iterator.  */
 
                         // if (iMenuOption == 9) {
-                        07 [@label_option_9] 9A 00 <.iMenuOption> 2C 09 16
+                        07 [@label_option_9] 82 9A 00 <.iMenuOption> 2C 09 16 18 [@] ( 81 1B <IsInCovertOperativeMode> 16 16 16 )
                             // kOption.strText = <String>
                             // kOption.iState = 0
                             // kOption.strHelp = <String>
@@ -191,7 +191,7 @@ OBJECT = XGSoldierUI.UpdateMainMenu : AUTO
                             06 [@label_0x0B9C]
                         [#label_option_9]
                          // else if (iMenuOption == 10) {
-                        07 [@label_option_10] 9A 00 <.iMenuOption> 2C 0A 16
+                        07 [@label_option_10] 82 9A 00 <.iMenuOption> 2C 0A 16 18 [@] ( 81 1B <IsInCovertOperativeMode> 16 16 16 )
                             0F 35 <XComGame.XGTacticalScreenMgr.TMenuOption.strText> <XComGame.XGTacticalScreenMgr.TMenuOption> 00 01 00 <.kOption> 1F <%t "Restore Loadout">
                    			0F 35 <XComGame.XGTacticalScreenMgr.TMenuOption.iState> <XComGame.XGTacticalScreenMgr.TMenuOption> 00 01 00 <.kOption> 25 
                  			0F 35 <XComGame.XGTacticalScreenMgr.TMenuOption.strHelp> <XComGame.XGTacticalScreenMgr.TMenuOption> 00 01 00 <.kOption> 1F <%t "Restore the current equipment loadout from a class-specific loadout slot.">

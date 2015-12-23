@@ -168,6 +168,7 @@ function String ApplySoldierLoadout(XGStrategySoldier kSoldier, TInventory kInve
     local bool success;
     local string failStr;
     local int i;
+    local int j;
 
     success = true;
     failStr = "Not enough equipment to fully re-equip soldier:\n";
@@ -186,24 +187,34 @@ function String ApplySoldierLoadout(XGStrategySoldier kSoldier, TInventory kInve
         }
     }
 
+    j = 0;
     for (i = 0; i < kInventory.iNumLargeItems; ++i) {
-        if (!LOCKERS().EquipLargeItem(kSoldier, kInventory.arrLargeItems[i], i)) {
+        if (!LOCKERS().EquipLargeItem(kSoldier, kInventory.arrLargeItems[i], j)) {
             success = false;
             failStr $= "- " $ GetLocalizedItemName(kInventory.arrLargeItems[i]) $ "\n";
         }
-    }
-
-    for (i = 0; i < kInventory.iNumSmallItems; ++i) {
-        if (!LOCKERS().EquipSmallItem(kSoldier, kInventory.arrSmallItems[i], i)) {
-            success = false;
-            failStr $= "- " $ GetLocalizedItemName(kInventory.arrSmallItems[i]) $ "\n";
+        else {
+            j++;
         }
     }
 
+    j = 0;
+    for (i = 0; i < kInventory.iNumSmallItems; ++i) {
+        if (!LOCKERS().EquipSmallItem(kSoldier, kInventory.arrSmallItems[i], j)) {
+            success = false;
+            failStr $= "- " $ GetLocalizedItemName(kInventory.arrSmallItems[i]) $ "\n";
+        } else {
+            j++;
+        }
+    }
+
+    j = 0;
     for (i = 0; i < kInventory.iNumCustomItems; ++i) {
-        if (!LOCKERS().EquipCustomItem(kSoldier, kInventory.arrCustomItems[i], i)) {
+        if (!LOCKERS().EquipCustomItem(kSoldier, kInventory.arrCustomItems[i], j)) {
             success = false;
             failStr $= "- " $ GetLocalizedItemName(kInventory.arrCustomItems[i]) $ "\n";
+        } else {
+            j++;
         }
     }
 
