@@ -47,13 +47,25 @@ function int GetBank(XGStrategySoldier kSoldier)
     }
 }
 
-function XGSoldierUI GetSoldierUI()
+function XGChooseSquadUI GetChooseSquadMgr()
 {
-    local XGSoldierUI kUI;
-
-    foreach AllActors(class 'XGSoldierUI', kUI)
+    local XGChooseSquadUI kMgr;
+    foreach AllActors(class 'XGChooseSquadUI', kMgr)
     {
-        return kUI;
+        return kMgr;
+    }
+
+    `Log("Failed to locate an XGChooseSquadUI instance");
+    return None;
+}
+
+function XGSoldierUI GetSoldierMgr()
+{
+    local XGSoldierUI kMgr;
+
+    foreach AllActors(class 'XGSoldierUI', kMgr)
+    {
+        return kMgr;
     }
 
     `Log("Failed to locate an XGSoldierUI instance");
@@ -104,34 +116,34 @@ function String GetLoadoutSummary(int iBank, int iSlot)
 
 function UpdateMainMenu()
 {
-    local XGSoldierUI kUI;
+    local XGSoldierUI kMgr;
     local TMenuOption kOption;
     local TMenu kMainMenu;
     local int i;
     local XGStrategySoldier kSoldier;
     local int iBank;
 
-    kUI = GetSoldierUI();
-    kUI.m_kMainMenu.arrOptions.Length = 0;
+    kMgr = GetSoldierMgr();
+    kMgr.m_kMainMenu.arrOptions.Length = 0;
 
-    kSoldier = kUI.m_kSoldier;
+    kSoldier = kMgr.m_kSoldier;
 
     iBank = GetBank(kSoldier);
     `Log("Using bank " $ iBank $ " for class " $ kSoldier.GetEnergy());
 
     for (i = 0; i < NUM_SLOTS; ++i) {
         kOption.strText = "Loadout Slot " $ string(i + 1);
-        if (kUI.m_iCurrentView == RESTORE_LOADOUT_VIEW) {
+        if (kMgr.m_iCurrentView == RESTORE_LOADOUT_VIEW) {
             kOption.iState = IsSlotEmpty(iBank, i) ? 1 : 0;
         } else {
             kOption.iState = 0;
         }
         kOption.strHelp = GetLoadoutSummary(iBank, i);
-        kUI.m_kMainMenu.arrOptions.AddItem(i);
+        kMgr.m_kMainMenu.arrOptions.AddItem(i);
         kMainMenu.arrOptions.AddItem(kOption);
     }
 
-    kUI.m_kMainMenu.mnuOptions = kMainMenu;
+    kMgr.m_kMainMenu.mnuOptions = kMainMenu;
 }
 
 function int GetSlotNumber(String str)
@@ -148,19 +160,19 @@ function int GetSlotNumber(String str)
 
 function SaveLoadout(String slot)
 {
-    local XGSoldierUI kUI;
+    local XGSoldierUI kMgr;
     local XGStrategySoldier kSoldier;
     local int iBank;
     local int iSlot;
 
     `Log("SaveLoadout: " $ slot);
-    kUI = GetSoldierUI();
-    kSoldier = kUI.m_kSoldier;
+    kMgr = GetSoldierMgr();
+    kSoldier = kMgr.m_kSoldier;
     iBank = GetBank(kSoldier);
     iSlot = GetSlotNumber(slot);
     kSaveSlots[iBank].kLoadout[iSlot] = kSoldier.m_kChar.kInventory;
-    kUI.PlayGoodSound();
-    kUI.GoToView(0);
+    kMgr.PlayGoodSound();
+    kMgr.GoToView(0);
 }
 
 function String ApplySoldierLoadout(XGStrategySoldier kSoldier, TInventory kInventory)
@@ -171,7 +183,7 @@ function String ApplySoldierLoadout(XGStrategySoldier kSoldier, TInventory kInve
     local int j;
 
     success = true;
-    failStr = "Not enough equipment to fully re-equip soldier:\n";
+    failStr = "";
 
     if (kInventory.iArmor != 0 && kInventory.iArmor != kSoldier.m_kChar.kInventory.iArmor) {
         if (!LOCKERS().EquipArmor(kSoldier, kInventory.iArmor)) {
@@ -180,7 +192,11 @@ function String ApplySoldierLoadout(XGStrategySoldier kSoldier, TInventory kInve
         }
     }
 
-    if (kInventory.iPistol != 0 && kInventory.iPistol != kSoldier.m_kChar.kInventory.iPistol) {
+    // Set the correct number of large/small slots for their armor
+    TACTICAL().TInventoryLargeItemsAdd(kSoldier.m_kChar.kInventory, LOCKERS().GetLargeInventorySlots(kSoldier, kSoldier.m_kChar.kInventory.iArmor));
+    TACTICAL().TInventorySmallItemsAdd(kSoldier.m_kChar.kInventory, LOCKERS().GetSmallInventorySlots(kSoldier, kSoldier.m_kChar.kInventory.iArmor));
+
+    if (kInventory.iPistol != 0 && kInventory.iPistol != kSoldier.m_kChar.kInventory.iPistol && kSoldier.GetClass() != 2) {
         if (!LOCKERS().EquipPistol(kSoldier, kInventory.iPistol)) {
             success = false;
             failStr $= "- " $ GetLocalizedItemName(kInventory.iPistol) $ "\n";
@@ -189,7 +205,7 @@ function String ApplySoldierLoadout(XGStrategySoldier kSoldier, TInventory kInve
 
     j = 0;
     for (i = 0; i < kInventory.iNumLargeItems; ++i) {
-        if (!LOCKERS().EquipLargeItem(kSoldier, kInventory.arrLargeItems[i], j)) {
+        if (j >= kSoldier.m_kChar.kInventory.iNumLargeItems || !LOCKERS().EquipLargeItem(kSoldier, kInventory.arrLargeItems[i], j)) {
             success = false;
             failStr $= "- " $ GetLocalizedItemName(kInventory.arrLargeItems[i]) $ "\n";
         }
@@ -200,7 +216,7 @@ function String ApplySoldierLoadout(XGStrategySoldier kSoldier, TInventory kInve
 
     j = 0;
     for (i = 0; i < kInventory.iNumSmallItems; ++i) {
-        if (!LOCKERS().EquipSmallItem(kSoldier, kInventory.arrSmallItems[i], j)) {
+        if (j >= kSoldier.m_kChar.kInventory.iNumSmallItems || !LOCKERS().EquipSmallItem(kSoldier, kInventory.arrSmallItems[i], j)) {
             success = false;
             failStr $= "- " $ GetLocalizedItemName(kInventory.arrSmallItems[i]) $ "\n";
         } else {
@@ -221,41 +237,57 @@ function String ApplySoldierLoadout(XGStrategySoldier kSoldier, TInventory kInve
     return success ? "" : failStr;
 }
 
+function string DoLoadout(XGStrategySoldier kSoldier, int iBank, int iSlot)
+{
+    local string failStr;
+    local int i;
+
+    // Release most items. Leaves default items & small items that aren't infinite.
+    STORAGE().BackupAndReleaseInventory(kSoldier);
+
+    // Remove all small items. This ensures items that can't be duplicated (e.g. alien trophies)
+    // are all removed before trying to add a new one. E.g. if the current loadout has a trophy in slot 2 and
+    // you try to apply a loadout with one in slot 1, it'll fail unless they're all removed.
+    for (i = 0; i < kSoldier.m_kChar.kInventory.iNumSmallItems; ++i) {
+        LOCKERS().UnequipSmallItem(kSoldier, i);
+    }
+
+    for (i = 0; i < kSoldier.m_kChar.kInventory.iNumLargeItems; ++i) {
+        LOCKERS().UnequipLargeItem(kSoldier, i);
+    }
+
+    for (i = 0; i < kSoldier.m_kChar.kInventory.iNumCustomItems; ++i) {
+        LOCKERS().UnequipCustomItem(kSoldier, i);
+    }
+
+    failStr = ApplySoldierLoadout(kSoldier, kSaveSlots[iBank].kLoadout[iSlot]);     
+    kSoldier.OnLoadoutChange();
+
+    return failStr;
+}
+
 function RestoreLoadout(String slot)
 {
-    local XGSoldierUI kUI;
+    local XGSoldierUI kMgr;
     local XGStrategySoldier kSoldier;
     local int iBank;
     local int iSlot;
-    local int i;
     local string failStr;
     local UIDialogueBox.TDialogueBoxData kDialog;
 
     `Log("RestoreLoadout: " $ slot);
-    kUI = GetSoldierUI();
-    kSoldier = kUI.m_kSoldier;
+    kMgr = GetSoldierMgr();
+    kSoldier = kMgr.m_kSoldier;
     iBank = GetBank(kSoldier);
     iSlot = GetSlotNumber(slot);
 
     // If this slot is empty, play the bad sound but stay in the view.
     if (IsSlotEmpty(iBank, iSlot)) {
-        kUI.PlayBadSound();
+        kMgr.PlayBadSound();
         return;
     }
     else {
-
-        // Release most items. Leaves default items & small items that aren't infinite.
-        STORAGE().BackupAndReleaseInventory(kSoldier);
-
-        // Remove all small items. This ensures items that can't be duplicated (e.g. alien trophies)
-        // are all removed before trying to add a new one. E.g. if the current loadout has a trophy in slot 2 and
-        // you try to apply a loadout with one in slot 1, it'll fail unless they're all removed.
-        for (i = 0; i < kSoldier.m_kChar.kInventory.iNumSmallItems; ++i) {
-            LOCKERS().UnequipSmallItem(kSoldier, i);
-        }
-
-        failStr = ApplySoldierLoadout(kSoldier, kSaveSlots[iBank].kLoadout[iSlot]);     
-        kSoldier.OnLoadoutChange();
+        failStr = DoLoadout(kSoldier, iBank, iSlot);
         PRES().m_kSoldierSummary.UpdatePanels();
         if (PRES().m_kSoldierLoadout != none) {
             PRES().m_kSoldierLoadout.UpdatePanels();
@@ -263,11 +295,11 @@ function RestoreLoadout(String slot)
 
         if (Len(failStr) == 0) {
             // Pretend we've just left the loadout UI. Plays a "close" sound and updates all the UI elements
-            kUI.OnLeaveGear(false);
+            kMgr.OnLeaveGear(false);
         } else {
-            kUI.PlayBadSound();
+            kMgr.PlayBadSound();
             kDialog.strTitle = "Restore Loadout Failed";
-            kDialog.strText = failStr;
+            kDialog.strText = "Not enough equipment to re-equip soldier:\n" $ failStr;
             kDialog.strAccept = "OK";
             kDialog.fnCallback = OnCloseLoadoutDialog;
             XComHQPresentationLayer(XComHeadquartersController(XComHeadquartersGame(class'Engine'.static.GetCurrentWorldInfo().Game).PlayerController).m_Pres).UIRaiseDialog(kDialog);
@@ -277,8 +309,47 @@ function RestoreLoadout(String slot)
 
 function OnCloseLoadoutDialog(UIDialogueBox.EUIAction eAction)
 {
-    local XGSoldierUI kUI;
-    kUI = GetSoldierUI();
-    kUI.OnLeaveGear(false);
+    local XGSoldierUI kMgr;
+    kMgr = GetSoldierMgr();
+    kMgr.OnLeaveGear(false);
 }
+
+function SquadLoadout(int iSlot)
+{
+    local XGChooseSquadUI kMgr;
+    local XGShip_DropShip kDropship;
+    local XGStrategySoldier kSoldier;
+    local int iBank;
+    local string failStr;
+    local UIDialogueBox.TDialogueBoxData kDialog;
+
+    kMgr = GetChooseSquadMgr();
+    kDropship = HANGAR().GetDropship();
+
+    foreach kDropship.m_arrSoldiers(kSoldier) {
+        iBank = GetBank(kSoldier);
+        if (!IsSlotEmpty(iBank, iSlot)) {
+            failStr $= DoLoadout(kSoldier, iBank, iSlot);
+            if (PRES().m_kSoldierLoadout != none) {
+                PRES().m_kSoldierLoadout.UpdatePanels();
+            }
+        }
+    }
+
+    if (Len(failStr) > 0) {
+        kMgr.PlayBadSound();
+        kDialog.strTitle = "Squad Loadout Incomplete";
+        kDialog.strText = "Not enough equipment to fully re-equip squad:\n" $ failStr;
+        kDialog.strAccept = "OK";
+        kDialog.fnCallback = OnCloseSquadDialog;
+        XComHQPresentationLayer(XComHeadquartersController(XComHeadquartersGame(class'Engine'.static.GetCurrentWorldInfo().Game).PlayerController).m_Pres).UIRaiseDialog(kDialog);
+    }
+    kMgr.UpdateView();
+}
+
+function OnCloseSquadDialog(UIDialogueBox.EUIAction eAction)
+{
+  
+}
+
 

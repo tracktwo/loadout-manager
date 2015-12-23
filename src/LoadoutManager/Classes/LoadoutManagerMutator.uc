@@ -35,6 +35,16 @@ function Mutate(String MutateString, PlayerController Sender)
         EnsureLoadoutManager(Sender);
         m_kLoadoutManager.RestoreLoadout(Split(MutateString, "XGSoldierUI.RestoreLoadout_", true));
     }
+    else if (MutateString == "SquadLoadout_0") {
+        `Log("Mutate: SquadLoadout 0");
+        EnsureLoadoutManager(Sender);
+        m_kLoadoutManager.SquadLoadout(0);
+    }
+    else if (MutateString == "SquadLoadout_1") {
+        `Log("Mutate: SquadLoadout 1");
+        EnsureLoadoutManager(Sender);
+        m_kLoadoutManager.SquadLoadout(1);
+    }
 
     super.Mutate(MutateString, Sender);
 }
