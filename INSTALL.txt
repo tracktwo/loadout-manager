@@ -1,0 +1,2 @@
+- Add LoadoutManager.u to DefaultEngine.ini
+- Copy LoadoutManager.u to <Install Folder>\XEW\XComGame\CookedPCConsole
