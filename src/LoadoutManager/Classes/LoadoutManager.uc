@@ -92,7 +92,11 @@ function UpdateMainMenu()
 
     for (i = 0; i < NUM_SLOTS; ++i) {
        kOption.strText = "Loadout Slot " $ string(i + 1);
-       kOption.iState = 0;
+       if (kUI.m_iCurrentView == RESTORE_LOADOUT_VIEW) {
+           kOption.iState = IsSlotEmpty(iBank, i) ? 1 : 0;
+       } else {
+           kOption.iState = 0;
+       }
        kOption.strHelp = GetLoadoutSummary(iBank, i);
        kUI.m_kMainMenu.arrOptions.AddItem(i);
        kMainMenu.arrOptions.AddItem(kOption);
