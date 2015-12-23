@@ -12,6 +12,7 @@ struct TSaveSlots
 
 struct CheckpointRecord
 {
+    var TSaveSlots kSaveSlots[NUM_CLASSES];
 };
 
 var TSaveSlots kSaveSlots[NUM_CLASSES];
@@ -162,12 +163,62 @@ function SaveLoadout(String slot)
     kUI.GoToView(0);
 }
 
+function String ApplySoldierLoadout(XGStrategySoldier kSoldier, TInventory kInventory)
+{
+    local bool success;
+    local string failStr;
+    local int i;
+
+    success = true;
+    failStr = "Not enough equipment to fully re-equip soldier:\n";
+
+    if (kInventory.iArmor != 0 && kInventory.iArmor != kSoldier.m_kChar.kInventory.iArmor) {
+        if (!LOCKERS().EquipArmor(kSoldier, kInventory.iArmor)) {
+            success = false;
+            failStr $= "- " $ GetLocalizedItemName(kInventory.iArmor) $ "\n";
+        }
+    }
+
+    if (kInventory.iPistol != 0 && kInventory.iPistol != kSoldier.m_kChar.kInventory.iPistol) {
+        if (!LOCKERS().EquipPistol(kSoldier, kInventory.iPistol)) {
+            success = false;
+            failStr $= "- " $ GetLocalizedItemName(kInventory.iPistol) $ "\n";
+        }
+    }
+
+    for (i = 0; i < kInventory.iNumLargeItems; ++i) {
+        if (!LOCKERS().EquipLargeItem(kSoldier, kInventory.arrLargeItems[i], i)) {
+            success = false;
+            failStr $= "- " $ GetLocalizedItemName(kInventory.arrLargeItems[i]) $ "\n";
+        }
+    }
+
+    for (i = 0; i < kInventory.iNumSmallItems; ++i) {
+        if (!LOCKERS().EquipSmallItem(kSoldier, kInventory.arrSmallItems[i], i)) {
+            success = false;
+            failStr $= "- " $ GetLocalizedItemName(kInventory.arrSmallItems[i]) $ "\n";
+        }
+    }
+
+    for (i = 0; i < kInventory.iNumCustomItems; ++i) {
+        if (!LOCKERS().EquipCustomItem(kSoldier, kInventory.arrCustomItems[i], i)) {
+            success = false;
+            failStr $= "- " $ GetLocalizedItemName(kInventory.arrCustomItems[i]) $ "\n";
+        }
+    }
+
+    return success ? "" : failStr;
+}
+
 function RestoreLoadout(String slot)
 {
     local XGSoldierUI kUI;
     local XGStrategySoldier kSoldier;
     local int iBank;
     local int iSlot;
+    local int i;
+    local string failStr;
+    local UIDialogueBox.TDialogueBoxData kDialog;
 
     `Log("RestoreLoadout: " $ slot);
     kUI = GetSoldierUI();
@@ -181,15 +232,42 @@ function RestoreLoadout(String slot)
         return;
     }
     else {
+
+        // Release most items. Leaves default items & small items that aren't infinite.
         STORAGE().BackupAndReleaseInventory(kSoldier);
-        LOCKERS().ApplySoldierLoadout(kSoldier, kSaveSlots[iBank].kLoadout[iSlot]);     
+
+        // Remove all small items. This ensures items that can't be duplicated (e.g. alien trophies)
+        // are all removed before trying to add a new one. E.g. if the current loadout has a trophy in slot 2 and
+        // you try to apply a loadout with one in slot 1, it'll fail unless they're all removed.
+        for (i = 0; i < kSoldier.m_kChar.kInventory.iNumSmallItems; ++i) {
+            LOCKERS().UnequipSmallItem(kSoldier, i);
+        }
+
+        failStr = ApplySoldierLoadout(kSoldier, kSaveSlots[iBank].kLoadout[iSlot]);     
         kSoldier.OnLoadoutChange();
         PRES().m_kSoldierSummary.UpdatePanels();
         if (PRES().m_kSoldierLoadout != none) {
             PRES().m_kSoldierLoadout.UpdatePanels();
         }
-        // Pretend we've just left the loadout UI. Plays a "close" sound and updates all the UI elements
-        kUI.OnLeaveGear(false);
+
+        if (Len(failStr) == 0) {
+            // Pretend we've just left the loadout UI. Plays a "close" sound and updates all the UI elements
+            kUI.OnLeaveGear(false);
+        } else {
+            kUI.PlayBadSound();
+            kDialog.strTitle = "Restore Loadout Failed";
+            kDialog.strText = failStr;
+            kDialog.strAccept = "OK";
+            kDialog.fnCallback = OnCloseLoadoutDialog;
+            XComHQPresentationLayer(XComHeadquartersController(XComHeadquartersGame(class'Engine'.static.GetCurrentWorldInfo().Game).PlayerController).m_Pres).UIRaiseDialog(kDialog);
+        }
     }
+}
+
+function OnCloseLoadoutDialog(UIDialogueBox.EUIAction eAction)
+{
+    local XGSoldierUI kUI;
+    kUI = GetSoldierUI();
+    kUI.OnLeaveGear(false);
 }
 
