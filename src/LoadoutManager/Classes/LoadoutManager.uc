@@ -193,6 +193,8 @@ function String ApplySoldierLoadout(XGStrategySoldier kSoldier, TInventory kInve
     }
 
     // Set the correct number of large/small slots for their armor
+    TACTICAL().TInventoryLargeItemsClear(kSoldier.m_kChar.kInventory);
+    TACTICAL().TInventorySmallItemsClear(kSoldier.m_kChar.kInventory);
     TACTICAL().TInventoryLargeItemsAdd(kSoldier.m_kChar.kInventory, LOCKERS().GetLargeInventorySlots(kSoldier, kSoldier.m_kChar.kInventory.iArmor));
     TACTICAL().TInventorySmallItemsAdd(kSoldier.m_kChar.kInventory, LOCKERS().GetSmallInventorySlots(kSoldier, kSoldier.m_kChar.kInventory.iArmor));
 
