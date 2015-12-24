@@ -236,6 +236,17 @@ function String ApplySoldierLoadout(XGStrategySoldier kSoldier, TInventory kInve
         }
     }
 
+    // If they have no large items selected, add the default gun. For rocketeers, add the default rocket.
+
+    if (kSoldier.m_kChar.kInventory.arrLargeItems[0] == 0) {
+        LOCKERS().EquipLargeItem(kSoldier, STORAGE().GetInfinitePrimary(kSoldier), 0);
+    }
+
+    if (kSoldier.GetEnergy() == 12 && kSoldier.m_kChar.kInventory.arrLargeItems[1] == 0) {
+        // Rocketeer with no rocket launcher...
+        LOCKERS().EquipLargeItem(kSoldier, 218, 1);
+    }
+
     return success ? "" : failStr;
 }
 
