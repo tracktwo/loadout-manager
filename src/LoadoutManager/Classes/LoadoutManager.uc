@@ -87,7 +87,7 @@ function String GetLoadoutSummary(int iBank, int iSlot)
     local String str;
     local int i;
     if (IsSlotEmpty(iBank, iSlot)) {
-        return "<Empty>";
+        return "Empty loadout slot";
     } else {
         str = GetLocalizedItemName(kSaveSlots[iBank].kLoadout[iSlot].iArmor);
         if (kSaveSlots[iBank].kLoadout[iSlot].iPistol != 0) {
@@ -207,6 +207,9 @@ function String ApplySoldierLoadout(XGStrategySoldier kSoldier, TInventory kInve
 
     j = 0;
     for (i = 0; i < kInventory.iNumLargeItems; ++i) {
+        if (kInventory.arrLargeItems[i] == 0) {
+            continue;
+        }
         if (j >= kSoldier.m_kChar.kInventory.iNumLargeItems || !LOCKERS().EquipLargeItem(kSoldier, kInventory.arrLargeItems[i], j)) {
             success = false;
             failStr $= "- " $ GetLocalizedItemName(kInventory.arrLargeItems[i]) $ "\n";
@@ -218,6 +221,9 @@ function String ApplySoldierLoadout(XGStrategySoldier kSoldier, TInventory kInve
 
     j = 0;
     for (i = 0; i < kInventory.iNumSmallItems; ++i) {
+        if (kInventory.arrSmallItems[i] == 0) {
+            continue;
+        }
         if (j >= kSoldier.m_kChar.kInventory.iNumSmallItems || !LOCKERS().EquipSmallItem(kSoldier, kInventory.arrSmallItems[i], j)) {
             success = false;
             failStr $= "- " $ GetLocalizedItemName(kInventory.arrSmallItems[i]) $ "\n";
@@ -228,6 +234,9 @@ function String ApplySoldierLoadout(XGStrategySoldier kSoldier, TInventory kInve
 
     j = 0;
     for (i = 0; i < kInventory.iNumCustomItems; ++i) {
+        if (kInventory.arrCustomItems[i] == 0) {
+            continue;
+        }
         if (!LOCKERS().EquipCustomItem(kSoldier, kInventory.arrCustomItems[i], j)) {
             success = false;
             failStr $= "- " $ GetLocalizedItemName(kInventory.arrCustomItems[i]) $ "\n";
@@ -343,9 +352,9 @@ function SquadLoadout(int iSlot)
         iBank = GetBank(kSoldier);
         if (!IsSlotEmpty(iBank, iSlot)) {
             failStr $= DoLoadout(kSoldier, iBank, iSlot);
-            if (PRES().m_kSoldierLoadout != none) {
-                PRES().m_kSoldierLoadout.UpdatePanels();
-            }
+//            if (PRES().m_kSoldierLoadout != none) {
+ //               PRES().m_kSoldierLoadout.UpdatePanels();
+  //          }
         }
     }
 
