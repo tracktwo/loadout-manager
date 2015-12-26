@@ -18,6 +18,24 @@ function EnsureLoadoutManager(PlayerController Sender)
     }
 }
 
+function AdjustDescription()
+{
+    local UISoldierSummary kUI;
+    local float height;
+
+    foreach AllActors(class 'UISoldierSummary', kUI) {
+        break;
+    }
+    if (kUI == none)
+    {
+        `Log("Failed to locate the UISoldierSummary instance");
+        return;
+    }
+
+    height = kUI.manager.GetVariableNumber(string(kUI.GetMCPath()) $ ".description._y");
+    kUI.manager.SetVariableNumber(string(kUI.GetMCPath()) $ ".description._y", height + 40);
+}
+
 function Mutate(String MutateString, PlayerController Sender)
 {
     if (MutateString == "XGSoldierUI.SaveRestoreLoadoutMenu") {
@@ -34,6 +52,9 @@ function Mutate(String MutateString, PlayerController Sender)
         `Log("Mutate: RestoreLoadout");
         EnsureLoadoutManager(Sender);
         m_kLoadoutManager.RestoreLoadout(Split(MutateString, "XGSoldierUI.RestoreLoadout_", true));
+    }
+    else if (MutateString == "UISoldierSummary.AdjustDescription") {
+        AdjustDescription();
     }
     else if (MutateString == "SquadLoadout_0") {
         `Log("Mutate: SquadLoadout 0");
