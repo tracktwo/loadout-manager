@@ -1,0 +1,28 @@
+// Patch the Soldier Summary flash movie to change the "description"
+// text field to an HTML text area. This allows changing the font size
+// to allow more text int the loadout summaries without overflowing the
+// background panel.
+
+UPK_FILE=UICollection_Strategy.upk
+OBJECT=gfxSoldierSummary.SoldierSummary
+
+// Change the textfield properties to include the
+// "HTML" flag. (31 -> 33)
+[BEFORE_HEX]
+24 4E 6F 72 6D 61 6C 46 6F 6E 74 00 7F 09 7D 00 
+00 00 13 00 77 FB 0D 6A FF B0 79 F0 ED 31 12 00
+[AFTER_HEX]
+24 4E 6F 72 6D 61 6C 46 6F 6E 74 00 7F 09 7D 00 
+00 00 13 00 77 FB 0D 6A FF B0 79 F0 ED 33 12 00
+
+// Change the SetDescription function to use
+//  this.description.textField.htmlText = text
+// instead of
+//  this.description.textField.text = text
+// (constant reference 19 -> 1D)
+[BEFORE_HEX]
+04 01 08 10 4E 96 02 00 08 18 4E 96 04 00 08 19
+[AFTER_HEX]
+04 01 08 10 4E 96 02 00 08 18 4E 96 04 00 08 1D
+
+
