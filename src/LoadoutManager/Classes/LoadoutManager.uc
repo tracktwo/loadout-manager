@@ -90,7 +90,8 @@ function String GetLoadoutSummary(int iBank, int iSlot)
     if (IsSlotEmpty(iBank, iSlot)) {
         return "Empty loadout slot";
     } else {
-        str = GetLocalizedItemName(kSaveSlots[iBank].kLoadout[iSlot].iArmor);
+        str = "<font size=\"20\">";
+        str $= GetLocalizedItemName(kSaveSlots[iBank].kLoadout[iSlot].iArmor);
 
         if (kSaveSlots[iBank].kLoadout[iSlot].iPistol != 0) {
             str $= " / ";
@@ -104,6 +105,7 @@ function String GetLoadoutSummary(int iBank, int iSlot)
             str $= " / ";
             str $= GetLocalizedItemName(kSaveSlots[iBank].kLoadout[iSlot].arrSmallItems[i]);
         }
+        str $= "</font>";
         return str;
     }
 }

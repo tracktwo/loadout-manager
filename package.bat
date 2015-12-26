@@ -15,6 +15,8 @@ type %~dp0\Patches\OnUnrealCommand.txt >> %1\LoadoutManager.txt
 type %~dp0\Patches\UpdateButtonHelp.txt >> %1\LoadoutManager.txt
 type %~dp0\Patches\UpdateData.txt >> %1\LoadoutManager.txt
 type %~dp0\Patches\UpdateView.txt >> %1\LoadoutManager.txt
+type %~dp0\Patches\OnInit.txt >> %1\LoadoutManager.txt
+type %~dp0\Patches\gfxSoldierSummary.txt >> %1\LoadoutManager.txt
 
 copy %1\LoadoutManager.txt %1\LoadoutManager_With_CampaignSummary.txt || (
     echo Failed to copy LoadoutManager.txt to CS version

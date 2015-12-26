@@ -32,8 +32,14 @@ function AdjustDescription()
         return;
     }
 
+    // Move the description box (separator + text area) down 40 pixels to give more space to the
+    // menu itself.
     height = kUI.manager.GetVariableNumber(string(kUI.GetMCPath()) $ ".description._y");
     kUI.manager.SetVariableNumber(string(kUI.GetMCPath()) $ ".description._y", height + 40);
+
+    // Increase the total height of the "bg" clip to allow more room before the text overflows
+    height = kUI.manager.GetVariableNumber(string(kUI.GetMCPath()) $ ".bg.height");
+    kUI.manager.SetVariableNumber(string(kUI.GetMCPath()) $ ".bg.height", height + 80);
 }
 
 function Mutate(String MutateString, PlayerController Sender)
