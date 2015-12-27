@@ -1,3 +1,13 @@
+2015-12-26 - Version 1.1
+    - Reduced the font size in the loadout descriptions displayed in
+      the soldier summary UI. This should prevent overflow of long
+      loadouts beyond the background panel.
+    - Adjusted the positioning of the description text to avoid the
+      menu buttons from overflowing into it for soldiers that have
+      more than 7 options (e.g. those that have both psi abilities and
+      gene mods, or are officers and have gene mods).
+    - Added controller support for the Squad Loadout buttons, mapped
+      to left and right triggers, respectively.
 
 2015-12-23 - Version 1.0
     Initial release
