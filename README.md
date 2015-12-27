@@ -39,7 +39,16 @@ for your typical squad loadouts, and slot 2 for slightly different terror missio
 
 ## Installation
 
-Installation of this mod depends on whether or not you have the Campaign Summary mod also installed.
+Installation of this mod depends on whether or not you have the Campaign Summary mod also installed, and whether or not you are upgrading
+from an earlier version.
+
+### Upgrading From an Earlier Version
+
+1. Uninstall the old patch. In PatcherGUI, click "Show Log" and find the patch script you installed for the Loadout Manager in the list of
+installed mods. Highlight it and select "Load Uninstaller". Then click "Apply".
+
+2. Reinstall as per a normal fresh installation. You may not need to alter the DefaultMutatorLoader.ini or DefaultCheckpoint.ini file, but
+ensure the correct lines are already there.
 
 ### Without Campaign Summary
 
