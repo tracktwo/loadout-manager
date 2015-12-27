@@ -20,7 +20,7 @@ OBJECT = UISquadSelect.UpdateButtonHelp : AUTO
         /* New Code */
 
         //m_kHelpBar.AddCenterHelp("Squad Loadout 1", "", OnMouseSimMission);
-        19 01 <@m_kHelpBar> [@] <NullRef> 00 ( 1B <AddCenterHelp> 1F <%t "Squad Loadout 1"> 1F <%t ""> 43 <OnMouseSimMission> <NullRef> 4A 16 )
-        19 01 <@m_kHelpBar> [@] <NullRef> 00 ( 1B <AddCenterHelp> 1F <%t "Squad Loadout 2"> 1F <%t ""> 43 <OnSimMission> <NullRef> 4A 16 )
+        19 01 <@m_kHelpBar> [@] <NullRef> 00 ( 1B <AddCenterHelp> 1F <%t "Squad Loadout 1"> 1F <%t "Icon_LT_L2"> 43 <OnMouseSimMission> <NullRef> 4A 16 )
+        19 01 <@m_kHelpBar> [@] <NullRef> 00 ( 1B <AddCenterHelp> 1F <%t "Squad Loadout 2"> 1F <%t "Icon_RT_R2"> 43 <OnSimMission> <NullRef> 4A 16 )
 /*(0x027D/0x01E5)*/ 04 0B 
 /*(0x027F/0x01E7)*/ 53 
