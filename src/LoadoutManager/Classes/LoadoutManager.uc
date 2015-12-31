@@ -125,7 +125,6 @@ function UpdateMainMenu()
     kSoldier = kMgr.m_kSoldier;
 
     iBank = GetBank(kSoldier);
-    `Log("Using bank " $ iBank $ " for class " $ kSoldier.GetEnergy());
 
     for (i = 0; i < NUM_SLOTS; ++i) {
         kOption.strText = "Loadout Slot " $ string(i + 1);
@@ -161,7 +160,6 @@ function SaveLoadout(String slot)
     local int iBank;
     local int iSlot;
 
-    `Log("SaveLoadout: " $ slot);
     kMgr = GetSoldierMgr();
     kSoldier = kMgr.m_kSoldier;
     iBank = GetBank(kSoldier);
@@ -278,7 +276,6 @@ function RestoreLoadout(String slot)
     local string failStr;
     local UIDialogueBox.TDialogueBoxData kDialog;
 
-    `Log("RestoreLoadout: " $ slot);
     kMgr = GetSoldierMgr();
     kSoldier = kMgr.m_kSoldier;
     iBank = GetBank(kSoldier);
