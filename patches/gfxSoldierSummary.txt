@@ -3,7 +3,7 @@
 // to allow more text int the loadout summaries without overflowing the
 // background panel.
 
-UPK_FILE=UICollection_Strategy.upk
+UPK_FILE=UICollection_Strategy_SF.upk
 OBJECT=gfxSoldierSummary.SoldierSummary
 
 // Change the textfield properties to include the
