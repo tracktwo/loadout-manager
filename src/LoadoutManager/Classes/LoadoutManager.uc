@@ -348,6 +348,10 @@ function SquadLoadout(int iSlot)
         XComHQPresentationLayer(XComHeadquartersController(XComHeadquartersGame(class'Engine'.static.GetCurrentWorldInfo().Game).PlayerController).m_Pres).UIRaiseDialog(kDialog);
     }
     kMgr.UpdateView();
+
+    // Bugfix for saves loaded from version 1.2 or earlier: The code incorrectly removed
+    // custom items from soldiers, causing item #37 to appear in storage. Remove these
+    STORAGE().RemoveAllItem(37);
 }
 
 function OnCloseSquadDialog(UIDialogueBox.EUIAction eAction)
