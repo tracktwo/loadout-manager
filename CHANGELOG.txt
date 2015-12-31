@@ -1,3 +1,7 @@
+2015-12-30 - Version 1.3
+    - Fix bug with psi soldiers powers like Mindfray doing no damage.
+    - Fix bug with "MISSING ITEM" items appearing in the grey market.
+
 2015-12-27 - Version 1.2
     - Fix bug when applying squad loadouts with SHIVs in the squad.
 
