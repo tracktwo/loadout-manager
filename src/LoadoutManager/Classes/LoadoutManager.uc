@@ -229,17 +229,6 @@ function String ApplySoldierLoadout(XGStrategySoldier kSoldier, TInventory kInve
     }
 
     j = 0;
-    for (i = 0; i < kInventory.iNumCustomItems; ++i) {
-        if (kInventory.arrCustomItems[i] == 0) {
-            continue;
-        }
-        if (!LOCKERS().EquipCustomItem(kSoldier, kInventory.arrCustomItems[i], j)) {
-            success = false;
-            failStr $= "- " $ GetLocalizedItemName(kInventory.arrCustomItems[i]) $ "\n";
-        } else {
-            j++;
-        }
-    }
 
     // If they have no large items selected, add the default gun. For rocketeers, add the default rocket.
 
@@ -272,10 +261,6 @@ function string DoLoadout(XGStrategySoldier kSoldier, int iBank, int iSlot)
 
     for (i = 0; i < kSoldier.m_kChar.kInventory.iNumLargeItems; ++i) {
         LOCKERS().UnequipLargeItem(kSoldier, i);
-    }
-
-    for (i = 0; i < kSoldier.m_kChar.kInventory.iNumCustomItems; ++i) {
-        LOCKERS().UnequipCustomItem(kSoldier, i);
     }
 
     failStr = ApplySoldierLoadout(kSoldier, kSaveSlots[iBank].kLoadout[iSlot]);     
@@ -345,12 +330,12 @@ function SquadLoadout(int iSlot)
     kDropship = HANGAR().GetDropship();
 
     foreach kDropship.m_arrSoldiers(kSoldier) {
+        if (kSoldier.IsATank()) {
+            continue;
+        }
         iBank = GetBank(kSoldier);
         if (!IsSlotEmpty(iBank, iSlot)) {
             failStr $= DoLoadout(kSoldier, iBank, iSlot);
-//            if (PRES().m_kSoldierLoadout != none) {
- //               PRES().m_kSoldierLoadout.UpdatePanels();
-  //          }
         }
     }
 
