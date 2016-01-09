@@ -180,7 +180,11 @@ function String ApplySoldierLoadout(XGStrategySoldier kSoldier, TInventory kInve
     failStr = "";
 
     if (kInventory.iArmor != 0 && kInventory.iArmor != kSoldier.m_kChar.kInventory.iArmor) {
-        if (!LOCKERS().EquipArmor(kSoldier, kInventory.iArmor)) {
+
+        if (TACTICAL().ArmorHasProperty(kInventory.iArmor, 3) && !kSoldier.HasPsiGift()) {
+            //Can't wear this armor if not psionic
+        }
+        else if (!LOCKERS().EquipArmor(kSoldier, kInventory.iArmor)) {
             success = false;
             failStr $= "- " $ GetLocalizedItemName(kInventory.iArmor) $ "\n";
         }
@@ -205,8 +209,22 @@ function String ApplySoldierLoadout(XGStrategySoldier kSoldier, TInventory kInve
             continue;
         }
         if (j >= kSoldier.m_kChar.kInventory.iNumLargeItems || !LOCKERS().EquipLargeItem(kSoldier, kInventory.arrLargeItems[i], j)) {
+
+            // If the first primary failed to load, add the default primary weapon.
+            if (j == 0) {
+                LOCKERS().EquipLargeItem(kSoldier, STORAGE().GetInfinitePrimary(kSoldier), 0);
+                ++j;
+            }
+
+            // If the 2nd primary weapon failed to load for a rocketeer, add the default rocket launcher.
+            else if (kSoldier.GetEnergy() == 12 && j == 1) {
+                LOCKERS().EquipLargeItem(kSoldier, 218, 1);
+                ++j;
+            }
+
             success = false;
             failStr $= "- " $ GetLocalizedItemName(kInventory.arrLargeItems[i]) $ "\n";
+
         }
         else {
             j++;
@@ -216,6 +234,11 @@ function String ApplySoldierLoadout(XGStrategySoldier kSoldier, TInventory kInve
     j = 0;
     for (i = 0; i < kInventory.iNumSmallItems; ++i) {
         if (kInventory.arrSmallItems[i] == 0) {
+            continue;
+        }
+
+        if (TACTICAL().WeaponHasProperty(kInventory.arrSmallItems[i], 12) && !kSoldier.HasPsiGift()) {
+            // can't equip this item if not psionic
             continue;
         }
         if (j >= kSoldier.m_kChar.kInventory.iNumSmallItems || !LOCKERS().EquipSmallItem(kSoldier, kInventory.arrSmallItems[i], j)) {
@@ -228,16 +251,6 @@ function String ApplySoldierLoadout(XGStrategySoldier kSoldier, TInventory kInve
 
     j = 0;
 
-    // If they have no large items selected, add the default gun. For rocketeers, add the default rocket.
-
-    if (kSoldier.m_kChar.kInventory.arrLargeItems[0] == 0) {
-        LOCKERS().EquipLargeItem(kSoldier, STORAGE().GetInfinitePrimary(kSoldier), 0);
-    }
-
-    if (kSoldier.GetEnergy() == 12 && kSoldier.m_kChar.kInventory.arrLargeItems[1] == 0) {
-        // Rocketeer with no rocket launcher...
-        LOCKERS().EquipLargeItem(kSoldier, 218, 1);
-    }
 
     return success ? "" : failStr;
 }
