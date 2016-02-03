@@ -15,6 +15,7 @@ to re-create them each session.
 * Dialog box feedback on failure to fully equip a soldier/squad if insufficient items are available.
 * Loadout settings persist in the save file.
 * Loadout description detailing the loadout settings is visible in-game for each loadout slot.
+* Localization support & Russian translation
 
 ## Usage
 
@@ -57,6 +58,8 @@ ensure the correct lines are already there.
 3. Copy DefaultCheckpoint.ini to your XEW config folder (e.g. C:\Program Files (x86)\Steam\SteamApps\Common\XCom Enemy Within\XEW\XComGame\Config)
 4. Add the following line to the bottom of the DefaultMutatorLoader.ini file in your XEW Config folder:
     arrStrategicMutators="LoadoutManager.LoadoutManagerMutator"
+5. Copy LoadoutManager.int to your Localization folder (e.g. C:\Program Files (x86)\Steam\SteamApps\Common\XCom Enemy Within\XEW\XComGame\Localization\INT)
+6. (Optional) Copy additional LoadoutManager.rus to your RUS localization folder (sibling of INT folder in step above). Necessary only for Russian localization.
 
 ### With Campaign Summary
 
@@ -66,6 +69,8 @@ ensure the correct lines are already there.
     ActorClassesToRecord=LoadoutManager.LoadoutManager
 4. Add the following line to the bottom of the DefaultMutatorLoader.ini file in your XEW Config folder:
     arrStrategicMutators="LoadoutManager.LoadoutManagerMutator"
+5. Copy LoadoutManager.int to your Localization folder (e.g. C:\Program Files (x86)\Steam\SteamApps\Common\XCom Enemy Within\XEW\XComGame\Localization\INT)
+6. (Optional) Copy additional LoadoutManager.rus to your RUS localization folder (sibling of INT folder in step above). Necessary only for Russian localization.
 
 ## Troubleshooting
 

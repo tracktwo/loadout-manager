@@ -72,6 +72,14 @@ function Mutate(String MutateString, PlayerController Sender)
         EnsureLoadoutManager(Sender);
         m_kLoadoutManager.SquadLoadout(1);
     }
+    else if (MutateString == "LoadoutManager.UpdateMainMenuForSaveRestore") {
+        EnsureLoadoutManager(Sender);
+        m_kLoadoutManager.UpdateMainMenuForSaveRestore();
+    }
+    else if (MutateString == "LoadoutManager.UpdateSquadButtons") {
+        EnsureLoadoutManager(Sender);
+        m_kLoadoutManager.UpdateSquadButtons();
+    }
 
     super.Mutate(MutateString, Sender);
 }

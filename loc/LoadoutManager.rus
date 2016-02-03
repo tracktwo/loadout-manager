@@ -1,0 +1,15 @@
+[LoadoutManager]
+
+m_strSaveLoadout="Сохранить набор"
+m_strSaveLoadoutDesc="Сохранить текущий набор снаряжения в отдельный слот для этого класса."
+m_strRestoreLoadout="Загрузить набор"
+m_strRestoreLoadoutDesc="Загрузить текущий набор снаряжения из отдельного слота для этого класса."
+m_strSquadLoadout1="Набор отряда 1"
+m_strSquadLoadout2="Набор отряда 2"
+
+m_strEmptyLoadoutSlot="Без набора снаряжения"
+m_strLoadoutSlot="Набор снаряжения"
+m_strRestoreLoadoutFailed="Не удалось загрузить набор"
+m_strNotEnoughEquipmentForSoldier="Не хватает снаряжения для экипирования солдата"
+m_strSquadLoadoutIncomplete="Неполный набор отряда"
+m_strNotEnoughEquipmentForSquad="Не хватает снаряжения для экипирования отряда"

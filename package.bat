@@ -45,3 +45,14 @@ copy %~dp0\DefaultCheckpoint.ini %1 || (
     echo Failed to copy DefaultCheckpoint.ini
     exit /b 1
     )
+
+copy %~dp0\loc\LoadoutManager.int %1 || (
+    echo Failed to copy LoadoutManager.RUS
+    exit /b 1
+    )
+
+copy %~dp0\loc\LoadoutManager.rus %1 || (
+    echo Failed to copy LoadoutManager.RUS
+    exit /b 1
+    )
+

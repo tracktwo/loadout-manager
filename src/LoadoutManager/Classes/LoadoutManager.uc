@@ -5,6 +5,20 @@ const RESTORE_LOADOUT_VIEW = 10;
 const NUM_SLOTS = 6;
 const NUM_CLASSES = 17; //8 classes + 8 mecs + PFC
 
+var const localized String m_strSaveLoadout;
+var const localized String m_strSaveLoadoutDesc;
+var const localized String m_strRestoreLoadout;
+var const localized String m_strRestoreLoadoutDesc;
+var const localized String m_strSquadLoadout1;
+var const localized String m_strSquadLoadout2;
+
+var const localized String m_strEmptyLoadoutSlot;
+var const localized String m_strLoadoutSlot;
+var const localized String m_strRestoreLoadoutFailed;
+var const localized String m_strNotEnoughEquipmentForSoldier;
+var const localized String m_strSquadLoadoutIncomplete;
+var const localized String m_strNotEnoughEquipmentForSquad;
+
 struct TSaveSlots
 {
     var TInventory kLoadout[NUM_SLOTS];
@@ -59,6 +73,19 @@ function XGChooseSquadUI GetChooseSquadMgr()
     return None;
 }
 
+function UISquadSelect GetUISquadSelect()
+{
+    local UISquadSelect kUI;
+
+    foreach AllActors(class 'UISquadSelect', kUI)
+    {
+        return kUI;
+    }
+
+    `Log("Failed to locate a UISquadSelect instance");
+    return none;
+}
+
 function XGSoldierUI GetSoldierMgr()
 {
     local XGSoldierUI kMgr;
@@ -88,7 +115,7 @@ function String GetLoadoutSummary(int iBank, int iSlot)
     local int i;
 
     if (IsSlotEmpty(iBank, iSlot)) {
-        return "Empty loadout slot";
+        return m_strEmptyLoadoutSlot;
     } else {
         str = "<font size=\"20\">";
         str $= GetLocalizedItemName(kSaveSlots[iBank].kLoadout[iSlot].iArmor);
@@ -127,7 +154,7 @@ function UpdateMainMenu()
     iBank = GetBank(kSoldier);
 
     for (i = 0; i < NUM_SLOTS; ++i) {
-        kOption.strText = "Loadout Slot " $ string(i + 1);
+        kOption.strText = m_strLoadoutSlot $ " " $ string(i + 1);
         if (kMgr.m_iCurrentView == RESTORE_LOADOUT_VIEW) {
             kOption.iState = IsSlotEmpty(iBank, i) ? 1 : 0;
         } else {
@@ -311,8 +338,8 @@ function RestoreLoadout(String slot)
             kMgr.OnLeaveGear(false);
         } else {
             kMgr.PlayBadSound();
-            kDialog.strTitle = "Restore Loadout Failed";
-            kDialog.strText = "Not enough equipment to re-equip soldier:\n" $ failStr;
+            kDialog.strTitle = m_strRestoreLoadoutFailed;
+            kDialog.strText = m_strNotEnoughEquipmentForSoldier $ ":\n" $ failStr;
             kDialog.strAccept = "OK";
             kDialog.fnCallback = OnCloseLoadoutDialog;
             XComHQPresentationLayer(XComHeadquartersController(XComHeadquartersGame(class'Engine'.static.GetCurrentWorldInfo().Game).PlayerController).m_Pres).UIRaiseDialog(kDialog);
@@ -351,8 +378,8 @@ function SquadLoadout(int iSlot)
 
     if (Len(failStr) > 0) {
         kMgr.PlayBadSound();
-        kDialog.strTitle = "Squad Loadout Incomplete";
-        kDialog.strText = "Not enough equipment to fully re-equip squad:\n" $ failStr;
+        kDialog.strTitle = m_strSquadLoadoutIncomplete;
+        kDialog.strText = m_strNotEnoughEquipmentForSquad $ ":\n" $ failStr;
         kDialog.strAccept = "OK";
         kDialog.fnCallback = OnCloseSquadDialog;
         XComHQPresentationLayer(XComHeadquartersController(XComHeadquartersGame(class'Engine'.static.GetCurrentWorldInfo().Game).PlayerController).m_Pres).UIRaiseDialog(kDialog);
@@ -369,4 +396,50 @@ function OnCloseSquadDialog(UIDialogueBox.EUIAction eAction)
   
 }
 
+function UpdateMainMenuForSaveRestore()
+{
+    local XGSoldierUI kMgr;
+    local TMenuOption kOption;
 
+    kMgr = GetSoldierMgr();
+
+    kOption.strText = m_strSaveLoadout;
+    kOption.iState = 0;
+    kOption.strHelp = m_strSaveLoadoutDesc;
+
+    kMgr.m_kMainMenu.arrOptions.AddItem(9);
+    kMgr.m_kMainMenu.mnuOptions.arrOptions.AddItem(kOption);
+
+    kOption.strText = m_strRestoreLoadout;
+    kOption.iState = 0;
+    kOption.strHelp = m_strRestoreLoadoutDesc;
+
+    kMgr.m_kMainMenu.arrOptions.AddItem(10);
+    kMgr.m_kMainMenu.mnuOptions.arrOptions.AddItem(kOption);
+}
+
+function UpdateSquadButtons()
+{
+    local UISquadSelect kUI;
+
+    kUI = GetUISquadSelect();
+    kUI.m_kHelpBar.AddCenterHelp(m_strSquadLoadout1, "Icon_LT_L2", kUI.OnMouseSimMission);
+    kUI.m_kHelpBar.AddCenterHelp(m_strSquadLoadout2, "Icon_RT_R2", kUI.OnSimMission);
+}
+
+function OnSquad1Loadout()
+{
+    local UISquadSelect kUI;
+
+    kUI = GetUISquadSelect();
+    kUI.OnMouseSimMission();
+}
+
+function OnSquad2Loadout()
+{
+    local UISquadSelect kUI;
+
+    kUI = GetUISquadSelect();
+    kUI.OnSimMission();
+    
+}

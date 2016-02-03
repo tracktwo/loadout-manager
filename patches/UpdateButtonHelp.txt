@@ -2,25 +2,28 @@
 UPK_FILE = XComStrategyGame.upk
 OBJECT = UISquadSelect.UpdateButtonHelp : AUTO
 [REPLACEMENT_CODE]
-/*(0x0000/0x0000)*/ 19 19 2E <Class.XComHQPresentationLayer> 19 01 <XComGame.UI_FxsPanel.controllerRef> [@] <XComGame.XComPlayerController.m_Pres> 00 ( 01 <XComGame.XComPlayerController.m_Pres> ) [@] <XComHQPresentationLayer.m_kStrategyHUD> 00 ( 01 <XComHQPresentationLayer.m_kStrategyHUD> ) [@] <NullRef> 00 ( 1B <ClearButtonHelp> 16 ) 
-/*(0x0052/0x0036)*/ 19 01 <@m_kHelpBar> [@] <NullRef> 00 ( 1B <ClearButtonHelp> 16 ) 
-/*(0x0071/0x004D)*/ 07 [@label_0x00FB] 19 19 1B <GetMgr> 16 [@] <XGStrategyActorNativeBase.Game.ReturnValue> 00 ( 1B <Game> 16 ) [@] <XGStrategy.m_bDebugStart> 00 ( 2D 01 <XGStrategy.m_bDebugStart> ) 
-/*(0x00AA/0x007A)*/ 	19 01 <@m_kHelpBar> [@] <NullRef> 00 ( 1B <AddLeftHelp> 1F <%t "Sim Missionz"> 1F <%t "Icon_BACK_SELECT"> 43 <OnMouseSimMission> <NullRef> 4A 16 ) 
-/*(0x00FB/0x00BF)*/ [#label_0x00FB]
-/*(0x00FB/0x00BF)*/ 07 [@label_0x01FA] 81 19 1B <GetMgr> 16 [@] <XGStrategyActorNativeBase.ISCONTROLLED.ReturnValue> 00 ( 1B <ISCONTROLLED> 16 ) 16 
-/*(0x0120/0x00E0)*/ 	07 [@label_0x01B4] 9B 19 19 1B <GetMgr> 16 [@] <XGChooseSquadUI.m_kMission> 00 ( 01 <XGChooseSquadUI.m_kMission> ) [@] <XGMission.m_iMissionType> 00 ( 01 <XGMission.m_iMissionType> ) 2C 07 16 
-/*(0x015B/0x010B)*/ 		19 01 <@m_kHelpBar> [@] <NullRef> 00 ( 1B <AddLeftHelp> 01 <@m_strBackToBriefing> 12 20 <XComGame.UI_FxsGamepadIcons> [@] <XComGame.UI_FxsGamepadIcons.GetBackButtonIcon.ReturnValue> 00 ( 1B <GetBackButtonIcon> 16 ) 43 <OnMouseCancel> <NullRef> 4A 16 ) 
-/*(0x01B4/0x014C)*/ 	[#label_0x01B4]
-/*(0x01B4/0x014C)*/ 	19 01 <@m_kHelpBar> [@] <NullRef> 00 ( 1B <AddLeftHelp> 01 <@m_strStripGearLabel> 1F <%t "Icon_RB_R1"> 43 <OnStripGear> <NullRef> 4A 16 ) 
-/*(0x01FA/0x0182)*/ [#label_0x01FA]
-/*(0x01FA/0x0182)*/ 07 [@label_0x027D] 9A 35 <XComGame.XGTacticalScreenMgr.TButtonText.iState> <XComGame.XGTacticalScreenMgr.TButtonText> 00 00 19 1B <GetMgr> 16 [@] <XGChooseSquadUI.m_txtLaunch> 00 ( 01 <XGChooseSquadUI.m_txtLaunch> ) 25 16 
-/*(0x0232/0x01AA)*/ 	19 01 <@m_kHelpBar> [@] <NullRef> 00 ( 1B <AddRightHelp> 01 <@m_strLaunch> 1F <%t "Icon_Y_TRIANGLE"> 43 <OnMouseLaunch> <NullRef> 4A 16 ) 
-/*(0x027D/0x01E5)*/ [#label_0x027D]
+19 19 2E <Class.XComHQPresentationLayer> 19 01 <XComGame.UI_FxsPanel.controllerRef> [@] <XComGame.XComPlayerController.m_Pres> 00 ( 01 <XComGame.XComPlayerController.m_Pres> ) [@] <XComHQPresentationLayer.m_kStrategyHUD> 00 ( 01 <XComHQPresentationLayer.m_kStrategyHUD> ) [@] <NullRef> 00 ( 1B <ClearButtonHelp> 16 ) 
+19 01 <@m_kHelpBar> [@] <NullRef> 00 ( 1B <ClearButtonHelp> 16 ) 
+07 [@label_0x00FB] 19 19 1B <GetMgr> 16 [@] <XGStrategyActorNativeBase.Game.ReturnValue> 00 ( 1B <Game> 16 ) [@] <XGStrategy.m_bDebugStart> 00 ( 2D 01 <XGStrategy.m_bDebugStart> ) 
+	19 01 <@m_kHelpBar> [@] <NullRef> 00 ( 1B <AddLeftHelp> 1F <%t "Sim Missionz"> 1F <%t "Icon_BACK_SELECT"> 43 <OnMouseSimMission> <NullRef> 4A 16 ) 
+[#label_0x00FB]
+07 [@label_0x01FA] 81 19 1B <GetMgr> 16 [@] <XGStrategyActorNativeBase.ISCONTROLLED.ReturnValue> 00 ( 1B <ISCONTROLLED> 16 ) 16 
+	07 [@label_0x01B4] 9B 19 19 1B <GetMgr> 16 [@] <XGChooseSquadUI.m_kMission> 00 ( 01 <XGChooseSquadUI.m_kMission> ) [@] <XGMission.m_iMissionType> 00 ( 01 <XGMission.m_iMissionType> ) 2C 07 16 
+		19 01 <@m_kHelpBar> [@] <NullRef> 00 ( 1B <AddLeftHelp> 01 <@m_strBackToBriefing> 12 20 <XComGame.UI_FxsGamepadIcons> [@] <XComGame.UI_FxsGamepadIcons.GetBackButtonIcon.ReturnValue> 00 ( 1B <GetBackButtonIcon> 16 ) 43 <OnMouseCancel> <NullRef> 4A 16 ) 
+	[#label_0x01B4]
+	19 01 <@m_kHelpBar> [@] <NullRef> 00 ( 1B <AddLeftHelp> 01 <@m_strStripGearLabel> 1F <%t "Icon_RB_R1"> 43 <OnStripGear> <NullRef> 4A 16 ) 
+[#label_0x01FA]
+07 [@label_0x027D] 9A 35 <XComGame.XGTacticalScreenMgr.TButtonText.iState> <XComGame.XGTacticalScreenMgr.TButtonText> 00 00 19 1B <GetMgr> 16 [@] <XGChooseSquadUI.m_txtLaunch> 00 ( 01 <XGChooseSquadUI.m_txtLaunch> ) 25 16 
+	19 01 <@m_kHelpBar> [@] <NullRef> 00 ( 1B <AddRightHelp> 01 <@m_strLaunch> 1F <%t "Icon_Y_TRIANGLE"> 43 <OnMouseLaunch> <NullRef> 4A 16 ) 
+[#label_0x027D]
 
         /* New Code */
-
+        // Mutate("LoadoutManager.UpdateSquadButtons");
+        19 19 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <Engine.GameInfo.BaseMutator> 00 ( 01 <Engine.GameInfo.BaseMutator> ) [@] <NullRef> 00 ( 1B <Mutate> 1F <%t "LoadoutManager.UpdateSquadButtons"> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.Actor.GetALocalPlayerController.ReturnValue> 00 ( 1C <Engine.Actor.GetALocalPlayerController> 16 ) 16 ) 
+        
         //m_kHelpBar.AddCenterHelp("Squad Loadout 1", "", OnMouseSimMission);
-        19 01 <@m_kHelpBar> [@] <NullRef> 00 ( 1B <AddCenterHelp> 1F <%t "Squad Loadout 1"> 1F <%t "Icon_LT_L2"> 43 <OnMouseSimMission> <NullRef> 4A 16 )
-        19 01 <@m_kHelpBar> [@] <NullRef> 00 ( 1B <AddCenterHelp> 1F <%t "Squad Loadout 2"> 1F <%t "Icon_RT_R2"> 43 <OnSimMission> <NullRef> 4A 16 )
-/*(0x027D/0x01E5)*/ 04 0B 
-/*(0x027F/0x01E7)*/ 53 
+//        19 01 <@m_kHelpBar> [@] <NullRef> 00 ( 1B <AddCenterHelp> 1F <%t "Squad Loadout 1"> 1F <%t "Icon_LT_L2"> 43 <OnMouseSimMission> <NullRef> 4A 16 )
+//        19 01 <@m_kHelpBar> [@] <NullRef> 00 ( 1B <AddCenterHelp> 1F <%t "Squad Loadout 2"> 1F <%t "Icon_RT_R2"> 43 <OnSimMission> <NullRef> 4A 16 )
+
+04 0B 
+53 

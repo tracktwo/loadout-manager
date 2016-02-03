@@ -17,8 +17,8 @@ OBJECT = XGSoldierUI.UpdateMainMenu : AUTO
 // if (m_iCurrentView == 9 || m_iCurrentView == 10) {
 //  Mutate("XGSoldierUI.SaveRestoreLoadoutMenu");
 // } 
-                /* Add two new options (09 -> 0B)
-/*(0x0047/0x002B)*/ 07 [@label_0x0BFC] 96 00 <.iMenuOption> 2C 0B 16 
+                // Add two new options (09 -> 0B)
+/*(0x0047/0x002B)*/ 07 [@label_0x0BFC] 96 00 <.iMenuOption> 2C 09 16 
 /*(0x0057/0x0037)*/ 	07 [@label_0x021E] 9A 00 <.iMenuOption> 2C 05 16 
 /*(0x0067/0x0043)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TMenuOption.strText> <XComGame.XGTacticalScreenMgr.TMenuOption> 00 01 00 <.kOption> 01 <@m_strLoadout> 
 /*(0x008D/0x0059)*/ 		0F 00 <.kSkyranger> 19 1B <HANGAR> 16 [@] <XGFacility_Hangar.GetDropship.ReturnValue> 00 ( 1B <GetDropship> 16 ) 
@@ -179,7 +179,7 @@ OBJECT = XGSoldierUI.UpdateMainMenu : AUTO
 /*(0x0B96/0x07F6)*/ 		06 [@label_0x0B9C] 
 /*(0x0B99/0x07F9)*/ 	[#label_0x0B99]
         /* Else block for new states. 0B9C is the location to jump to after finishing 0BEE is the next iterator.  */
-
+/*
                         // if (iMenuOption == 9) {
                         07 [@label_option_9] 82 9A 00 <.iMenuOption> 2C 09 16 18 [@] ( 81 1B <IsInCovertOperativeMode> 16 16 16 )
                             // kOption.strText = <String>
@@ -197,6 +197,7 @@ OBJECT = XGSoldierUI.UpdateMainMenu : AUTO
                  			0F 35 <XComGame.XGTacticalScreenMgr.TMenuOption.strHelp> <XComGame.XGTacticalScreenMgr.TMenuOption> 00 01 00 <.kOption> 1F <%t "Restore the current equipment loadout from a class-specific loadout slot.">
                             06 [@label_0x0B9C]
                         [#label_option_10]
+			*/
 /*(0x0B99/0x07F9)*/ 	06 [@label_0x0BEE] 
 /*(0x0B9C/0x07FC)*/ 	[#label_0x0B9C]
 /*(0x0B9C/0x07FC)*/ 	55 35 <XGSoldierUI.TSoldierMainMenu.arrOptions> <@TSoldierMainMenu> 00 00 01 <@m_kMainMenu> [@] ( 00 <.iMenuOption> 16 ) 
@@ -206,6 +207,12 @@ OBJECT = XGSoldierUI.UpdateMainMenu : AUTO
 /*(0x0BF9/0x0835)*/ 	06 [@label_0x0047] 
 /*(0x0BFC/0x0838)*/ [#label_0x0BFC]
 /*(0x0BFC/0x0838)*/ 0F 35 <XGSoldierUI.TSoldierMainMenu.mnuOptions> <@TSoldierMainMenu> 00 01 01 <@m_kMainMenu> 00 <.kMainMenu> 
+
+
+// Mutate("LoadoutManager.UpdateMainMenuForSaveRestore")
+            19 19 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <Engine.GameInfo.BaseMutator> 00 ( 01 <Engine.GameInfo.BaseMutator> ) [@] <NullRef> 00 ( 1B <Mutate> 1F <%t "LoadoutManager.UpdateMainMenuForSaveRestore"> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.Actor.GetALocalPlayerController.ReturnValue> 00 ( 1C <Engine.Actor.GetALocalPlayerController> 16 ) 16 ) 
+
+
 /*(0x0C22/0x084E)*/ 04 0B 
 /*(0x0C24/0x0850)*/ [#label_0x0C24]
 /*(0x0C24/0x0850)*/ 07 [@label_0x0C8B] 9A 19 01 <@m_kSoldier> [@] <XGStrategySoldier.GetRank.ReturnValue> 00 ( 1B <GetRank> 16 ) 25 16 
