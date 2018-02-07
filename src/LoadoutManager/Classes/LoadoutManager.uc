@@ -404,14 +404,14 @@ function UpdateMainMenuForSaveRestore()
     kMgr = GetSoldierMgr();
 
     kOption.strText = m_strSaveLoadout;
-    kOption.iState = 0;
+    kOption.iState = kMgr.m_kSoldier.IsATank() ? 1 : 0;
     kOption.strHelp = m_strSaveLoadoutDesc;
 
     kMgr.m_kMainMenu.arrOptions.AddItem(9);
     kMgr.m_kMainMenu.mnuOptions.arrOptions.AddItem(kOption);
 
     kOption.strText = m_strRestoreLoadout;
-    kOption.iState = 0;
+    kOption.iState = kMgr.m_kSoldier.IsATank() ? 1 : 0;
     kOption.strHelp = m_strRestoreLoadoutDesc;
 
     kMgr.m_kMainMenu.arrOptions.AddItem(10);

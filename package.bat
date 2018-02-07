@@ -36,7 +36,7 @@ copy %~dp0\CHANGELOG.txt %1 || (
     exit /b 1
     )
 
-copy D:\UDK\UDKGame\CookedPC\LoadoutManager.u %1 || (
+copy D:\UDK\UDK-2011-09\UDKGame\CookedPC\LoadoutManager.u %1 || (
     echo Failed to copy LoadoutManager.u
     exit /b 1
     )

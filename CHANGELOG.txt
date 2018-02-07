@@ -1,3 +1,10 @@
+2018-02-06 - Version 1.6
+    - Disable save/restore menu items for SHIVs. They were already
+      excluded from squad loadouts with version 1.2, but could still
+      use the individual save/restore loadout buttons. Restoring on
+      a SHIV used the PFC banks and would corrupt the SHIV. Allowing
+      SHIVS to have dedicated loadout banks may be implemented later.
+
 2016-02-03 - Version 1.5
     - Add localization support & Russian translations.
 
